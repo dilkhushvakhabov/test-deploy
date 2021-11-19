@@ -3,8 +3,10 @@ from .models import Profile
 
 
 def index_view(request):
-    try:
-        profile = Profile.objects.get(user=request.user)
-    except Profile.DoesNotExist:
-        profile = None
+    profile = None
+    if request.user.is_authenticated:
+        try:
+            profile = Profile.objects.get(user=request.user)
+        except Profile.DoesNotExist:
+            pass
     return render(request, 'index.html', {'profile': profile})
